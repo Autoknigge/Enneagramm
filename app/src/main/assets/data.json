@@ -1,0 +1,440 @@
+{
+"names": {
+"8": "Herausforderer",
+"9": "Friedlicher",
+"1": "Perfektionist",
+"2": "Unterstützer",
+"3": "Erfolgreicher",
+"4": "Künstler",
+"5": "Denker",
+"6": "Skeptiker",
+"7": "Entertainer"
+},
+"panels": [
+{
+"page": "muster",
+"chap": "Kapitel 2 · Das Grundmuster",
+"title": "Nomen est omen",
+"bubble": "Wer gibst du vor zu sein? (anstatt der wahrhaft Liebende) – das entlarvt den Suchenden, wenn er ehrlich mit sich ist.",
+"items": {
+"8": "Herausforderer",
+"9": "Friedlicher",
+"1": "Perfektionist",
+"2": "Unterstützer",
+"3": "Erfolgreicher",
+"4": "Künstler",
+"5": "Denker",
+"6": "Skeptiker",
+"7": "Entertainer"
+}
+},
+{
+"page": "muster",
+"chap": "Kapitel 2 · Das Grundmuster",
+"title": "Verlangen",
+"bubble": "Diese grundsätzlichen Muster kristallisieren sich aus der Metaperspektive als Essenz.",
+"items": {
+"8": "Führen, beschützen",
+"9": "Verschmelzen, versöhnen",
+"1": "Normieren, korrigieren",
+"2": "Verbinden, helfen",
+"3": "Hervorragen, erzielen",
+"4": "Inspirieren, einzigartig sein",
+"5": "Beobachten, nicht anhaften",
+"6": "In Frage stellen, Sicherheit geben",
+"7": "Stimulieren, Offenheit zeigen"
+}
+},
+{
+"page": "muster2",
+"chap": "Kapitel 2 · Das Grundmuster",
+"title": "Strategie: Streben nach …",
+"bubble": "Das Streben, aus dem das Muster seine Kraft zieht.",
+"items": {
+"8": "Macht",
+"9": "Harmonie",
+"1": "Vollkommenheit",
+"2": "Verbundenheit",
+"3": "Außerordentlichkeit",
+"4": "Einzigartigkeit",
+"5": "Losgelöstheit",
+"6": "Sicherheit",
+"7": "Lebensfreude"
+}
+},
+{
+"page": "muster2",
+"chap": "Kapitel 2 · Das Grundmuster",
+"title": "Wahrhaftig sein durch …",
+"bubble": "Der Enneagrammtyp möchte gern …",
+"items": {
+"8": "Gerechtigkeit",
+"9": "Harmonie",
+"1": "Vollkommenheit",
+"2": "Geben",
+"3": "Erfolgreiches Projekt",
+"4": "Differenzierung",
+"5": "Beobachten",
+"6": "Vertrauen",
+"7": "Stimulation"
+}
+},
+{
+"page": "muster3",
+"chap": "Kapitel 2 · Das Grundmuster",
+"title": "Kernkompetenzen",
+"bubble": "Der Werkzeugkasten wurde von Geburt an trainiert.",
+"items": {
+"8": "Beschützen & Wahrheit",
+"9": "Versöhnen & Harmonie",
+"1": "Korrigieren & Perfektion",
+"2": "Helfen & Geben",
+"3": "Erreichen & Leisten",
+"4": "Differenzieren & Inspiration",
+"5": "Beobachten & Wissen",
+"6": "Infragestellen & Vertrauen",
+"7": "Planen & Vorstellungskraft"
+}
+},
+{
+"page": "muster3",
+"chap": "Kapitel 2 · Das Grundmuster",
+"title": "Besondere Kompetenzen",
+"bubble": "Jede Enneagrammstruktur weist einzigartige intrinsische Kompetenzen auf.",
+"items": {
+"8": "Macher – Auf den Punkt bringen",
+"9": "Mediator – Harmonie",
+"1": "Reformer – Wahrheit",
+"2": "Unterstützer – Anderen zugewandt",
+"3": "Motivator – Effizienz",
+"4": "Individualist – Authentizität",
+"5": "Experte – Wissen",
+"6": "Behutsamer – Vorsicht",
+"7": "Genießer – Schnelligkeit"
+}
+},
+{
+"page": "muster4",
+"chap": "Kapitel 2 · Das Grundmuster",
+"title": "Positiv",
+"bubble": "Es gibt weder gute noch schlechte Fixierungen. Unser Bewusstseinsgrad macht uns zum Engel … oder Teufel.",
+"items": {
+"8": "Beschützend",
+"9": "Harmonisch",
+"1": "Strukturierend",
+"2": "Helfend",
+"3": "Effizient",
+"4": "Ästhetisch",
+"5": "Wissend",
+"6": "Loyal",
+"7": "Kreativ"
+}
+},
+{
+"page": "muster4",
+"chap": "Kapitel 2 · Das Grundmuster",
+"title": "Style",
+"bubble": "Zurücklehnen und beobachten … was fällt dir besonders auf?",
+"items": {
+"8": "Kraftvoll",
+"9": "Gefühle vermeidend",
+"1": "Konformität",
+"2": "Bezogenheit",
+"3": "Schaffenskraft",
+"4": "Ausdrucksvoll",
+"5": "Solist",
+"6": "Übereinstimmen",
+"7": "Unterhaltend"
+}
+},
+{
+"page": "muster5",
+"chap": "Kapitel 2 · Das Grundmuster",
+"title": "Merkmale",
+"bubble": "Manchmal erkennt man sie schon auf den ersten Blick.",
+"items": {
+"8": "Macht und Kontrolle",
+"9": "Harmonie und Selbstvergessenheit",
+"1": "Zorn und Perfektion",
+"2": "Stolz und Manipulation",
+"3": "Erfolg und Eitelkeit",
+"4": "Individualität und Neid",
+"5": "Habgier und Isolation",
+"6": "Angst oder Kampf",
+"7": "Spaß und Völlerei"
+}
+},
+{
+"page": "muster5",
+"chap": "Kapitel 2 · Das Grundmuster",
+"title": "Sichtbar",
+"bubble": "Oft sind die Muster einem selbst nicht bewusst, sie werden nur dem aufmerksamen Beobachter sichtbar. Tipp: Frage Partner, Kinder und gute Freunde.",
+"items": {
+"8": "Kommando",
+"9": "Zusammenführen",
+"1": "Gemeinsame Standards",
+"2": "Intimität",
+"3": "„Mein Fang“",
+"4": "Vernarrtheit",
+"5": "„Meine Welt“",
+"6": "Kraft und Verbindung",
+"7": "Neugier"
+}
+},
+{
+"page": "muster6",
+"chap": "Kapitel 2 · Das Grundmuster",
+"title": "Eigenschutz",
+"bubble": "Womit wehrt der Enneatyp ab, zu lieben und geliebt zu werden?",
+"items": {
+"8": "Aggressivität",
+"9": "Selbstvergessenheit",
+"1": "Pingeligkeit",
+"2": "Gefälligkeit",
+"3": "Täuschung",
+"4": "Melancholie",
+"5": "Geiz",
+"6": "Angst",
+"7": "Zügellosigkeit"
+}
+},
+{
+"page": "muster6",
+"chap": "Kapitel 2 · Das Grundmuster",
+"title": "Verteidigung",
+"bubble": "Was machen die Enneagrammtypen, wenn sie sich wehren und verteidigen müssen?",
+"items": {
+"8": "Ablehnung",
+"9": "Betäubung",
+"1": "Gegensätzliches Verhalten",
+"2": "Bedürfnisunterdrückung",
+"3": "Identifikation mit Rollen",
+"4": "Übernahme fremder Wertesysteme",
+"5": "Isolation",
+"6": "Projektion",
+"7": "Rationalisierung"
+}
+},
+{
+"page": "erkennen",
+"chap": "Kapitel 3 · Erkennen",
+"title": "Erkennbar",
+"bubble": "Manchmal stechen bestimmte Eckpunkte der Enneagrammtypen sofort ins Auge.",
+"items": {
+"8": "Widerstand, Augenhöhe, sagen, wie es ist",
+"9": "Schatzkiste, will gesucht und gefunden werden",
+"1": "Ordnung ist besser als Unordnung",
+"2": "Kein Zugang zu eigenen Bedürfnissen",
+"3": "Verkaufen, kein Zugang zu eigenen Gefühlen",
+"4": "Träumer, Sehnsucht & Angst, erkannt zu werden",
+"5": "Refugium, von oben schauen, nicht gesehen werden",
+"6": "Bürokratisch, gesetzestreu, verleugnen Freunde",
+"7": "Andere sind Miesmacher, mehr ist besser"
+}
+},
+{
+"page": "erkennen",
+"chap": "Kapitel 3 · Erkennen",
+"title": "Erkenne dich selbst",
+"bubble": "Weitere typische Merkmale, an denen der Enneagrammtyp erkennbar wird.",
+"items": {
+"8": "Überlebender",
+"9": "Komfort",
+"1": "Selbstbeherrscht",
+"2": "Anspruch",
+"3": "Arbeitswütig",
+"4": "Sinnlich",
+"5": "Sammler",
+"6": "Verantwortung",
+"7": "Meins bekommen"
+}
+},
+{
+"page": "erkennen2",
+"chap": "Kapitel 3 · Erkennen",
+"title": "Zäsur oft durch …",
+"bubble": "Diese Einschnitte sind oft Wendepunkte im Leben, weil sie das Ego an seiner empfindlichsten Stelle treffen.",
+"items": {
+"8": "Entmachtung, Kontrollverlust und Verrat",
+"9": "Disharmonie und Unsichtbarkeit",
+"1": "Unordnung und Makel",
+"2": "Trennung und Alleinsein",
+"3": "Misserfolg und Imageverlust",
+"4": "Verlust der Besonderheit",
+"5": "Verlust von Wissen und Geld",
+"6": "Gefahr, Bedrohung und Irrwege",
+"7": "Verlust der Freiheit und Unabhängigkeit"
+}
+},
+{
+"page": "erkennen2",
+"chap": "Kapitel 3 · Erkennen",
+"title": "Empfindlichkeit",
+"bubble": "Die Dinge, die man einem Menschen des entsprechenden Enneatyps nicht antun sollte.",
+"items": {
+"8": "Verrat und Vertrauensbruch",
+"9": "Über sie reden",
+"1": "Auf Fehler hinweisen, kritisieren",
+"2": "Nicht anerkennen und schätzen",
+"3": "Nicht bewundern, ignorieren",
+"4": "Das Besondere ignorieren und Vorschriften machen",
+"5": "Als unwissend darstellen, bedrängen",
+"6": "Unzuverlässigkeit und Lügen",
+"7": "Freiheit einschränken und kontrollieren"
+}
+},
+{
+"page": "erkennen3",
+"chap": "Kapitel 3 · Erkennen",
+"title": "Sensibilität für …",
+"bubble": "In welchem Bereich haben die Enneatypen eine besondere Begabung bzw. Empfindsamkeit entwickelt?",
+"items": {
+"8": "Autonomes Handeln · Grundbedürfnisse · Verantwortung · Respekt",
+"9": "Physiologische Behaglichkeit · Ausgleich · Urangst vor Konflikt",
+"1": "Gut / Richtig · Gewissenhafte Verantwortung · Optimieren",
+"2": "Identität aufgeben · Anpassungsfähigkeit · Persönlicher Wert",
+"3": "Impulse geben · Leistung / Wert · Unabhängig sein",
+"4": "Kreativer Ausdruck · Deep Connection · Wert durch Anerkennung",
+"5": "Abschirmung · Orientierung · Expertentum",
+"6": "Sicherheit durch Wachsamkeit · Bedenkenträger",
+"7": "Leichtigkeit · Keine Hierarchien · Ideen entwickeln"
+}
+},
+{
+"page": "erkennen3",
+"chap": "Kapitel 3 · Erkennen",
+"title": "Ego-Sichtweise",
+"bubble": "Die negativen Glaubenssätze bzw. Standpunkte der Enneatypen gegenüber der Umwelt.",
+"items": {
+"8": "Andere sind schwach, bringen es nicht auf den Punkt",
+"9": "Andere sind konfliktbeladen und konfrontativ",
+"1": "Andere sind unordentlich und fehlerhaft",
+"2": "Andere sind selbstsüchtig und unsensibel",
+"3": "Andere sind ineffizient und bringen mich nicht weiter",
+"4": "Andere sind oberflächlich, verstehen mich nicht",
+"5": "Andere sind dumm und wollen etwas von mir",
+"6": "Andere sind zu unkritisch und unachtsam",
+"7": "Andere sind negativ, verstehen keinen Spaß"
+}
+},
+{
+"page": "erkennen4",
+"chap": "Kapitel 3 · Erkennen",
+"title": "Kindheit",
+"bubble": "Oft spiegeln die Kindheitserfahrungen den entsprechenden Enneagrammtyp. (V = Vater, M = Mutter, + / − = Bezug)",
+"items": {
+"8": "Mutter reagierte nur auf aggressives Verhalten (M+/−)",
+"9": "Eltern waren die Besten, Identifikation mit den Eltern (MV+)",
+"1": "Kritisierender / strafender Vater (V−)",
+"2": "Vaterersatz suchend, Liebe gegen Hilfe (V+/−)",
+"3": "Positiver Mutterbezug, Liebe gegen Leistung (M+)",
+"4": "Behütet, missverstanden, Phantasiewelt, einsam (MV−)",
+"5": "Übergriffigkeit verursacht Rückzug (MV+/−)",
+"6": "Orientierung an (sicherer) Vaterfigur (V+)",
+"7": "Starker Vaterbezug, Besitz als Ersatz für entgangene Mutterliebe (M−)"
+}
+},
+{
+"page": "erkennen4",
+"chap": "Kapitel 3 · Erkennen",
+"title": "Herausforderungen",
+"bubble": "Welche Erfahrung machst du mit dem jeweiligen Enneagrammtypen?",
+"items": {
+"8": "Führt dich, wenn du dich nicht wehrst",
+"9": "Ist oft müde und faul",
+"1": "Mit dir nicht zufrieden",
+"2": "Hält dich in Schulden",
+"3": "Versucht stets, dich zu optimieren",
+"4": "Saugt deine Energie und Glück",
+"5": "Gibt dir das Gefühl, dumm zu sein",
+"6": "Verunsichert dich",
+"7": "Der Realität entfliehen"
+}
+},
+{
+"page": "erkennen5",
+"chap": "Kapitel 3 · Erkennen",
+"title": "Meine Partner sollen … sein",
+"bubble": "Wenn der Enneagrammtyp sich einen für ihn idealen Partner aussuchen könnte.",
+"items": {
+"8": "Sparringspartner",
+"9": "Butler",
+"1": "Perfekt",
+"2": "Bedürftig",
+"3": "Anerkennend",
+"4": "Tolerant",
+"5": "Großzügig",
+"6": "Loyale Partner",
+"7": "Reisebegleiter"
+}
+},
+{
+"page": "erkennen5",
+"chap": "Kapitel 3 · Erkennen",
+"title": "Spiegelung",
+"bubble": "Was gibt der Enneagrammtyp dir für ein Gefühl?",
+"items": {
+"8": "Das schaffst du doch nicht ohne mich",
+"9": "Du bist aggressiv",
+"1": "Du bist nicht gut genug",
+"2": "Du gibst (mir) nicht genug",
+"3": "Du bist nicht erfolgreich",
+"4": "Du bist nichts Besonderes",
+"5": "Du bist dumm",
+"6": "Du bist aber unsicher",
+"7": "Wegen dir bin ich so unglücklich"
+}
+},
+{
+"page": "bewegung",
+"chap": "Kapitel 4 · Stress & Heilung",
+"title": "Stress",
+"bubble": "In unangenehmen Lebenssituationen oder im Krankheitsfall tendieren die Typen in Richtung ihres Stresspunktes. Auch ihr Muster ändert sich dann temporär.",
+"items": {
+"8": "Rückzug (wie eine 5)",
+"9": "Ängstlich (wie eine 6)",
+"1": "Melancholie (wie eine 4)",
+"2": "Ausfallend (wie eine 8)",
+"3": "Träge (wie eine 9)",
+"4": "Bedürftig (wie eine 2)",
+"5": "Verdrängend (wie eine 7)",
+"6": "Ruhelos (wie eine 3)",
+"7": "Perfektionistisch und zornig (wie eine 1)"
+}
+},
+{
+"page": "bewegung",
+"chap": "Kapitel 4 · Stress & Heilung",
+"title": "Heilung",
+"bubble": "Umgekehrt ist es in entspannten Lebensabschnitten: Hier gibt es eine Tendenz, temporär die Mechanismen des Entspannungspunktes zu übernehmen.",
+"items": {
+"8": "Unterstützender (wie eine 2)",
+"9": "Tatkräftiger (wie eine 3)",
+"1": "Fröhlicher (wie eine 7)",
+"2": "Ich-Bezogener (wie eine 4)",
+"3": "Ehrlicher (wie eine 6)",
+"4": "Strukturierter (wie eine 1)",
+"5": "Extrovertierter (wie eine 8)",
+"6": "Harmonischer (wie eine 9)",
+"7": "Nachdenklicher (wie eine 5)"
+}
+},
+{
+"page": "untertypen",
+"chap": "Kapitel 7 · Untertypen",
+"title": "Kontratypen",
+"bubble": "Sie negieren ihre Muster: durch den Untertyp leben sie diese in verzerrter oder sogar konträrer Form. Besonders schwer zu bestimmen!",
+"items": {
+"8": "Sozial bekämpft das Machtstreben",
+"9": "Sozial verneint die Trägheit",
+"1": "Beziehungstyp tritt dem Zorn entgegen",
+"2": "Selbsterhaltender Untertyp erkennt seine Bedürfnisse",
+"3": "Selbsterhaltender Untertyp unterbindet Täuschung",
+"4": "Selbsterhaltender Untertyp widersetzt sich der Melancholie",
+"5": "Beziehungstyp wendet sich Menschen zu",
+"6": "Beziehungstyp tötet seine Angst",
+"7": "Sozial wehrt sich gegen die Völlerei"
+}
+}
+]
+}
