@@ -159,8 +159,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun showHome() {
         back.clear()
-        screen("Enneagramm Lern-Heft", null, { c ->
-            c.addView(text("Die neun Muster auf einen Blick: lesen, nachschlagen und üben.", 14f, DIM), lp(0))
+        screen("Lern-Heft", null, { c ->
+            c.addView(android.widget.ImageView(this).apply {
+                setImageResource(R.drawable.logo_enneagramm)
+                adjustViewBounds = true
+                contentDescription = "Enneagramm"
+            }, LinearLayout.LayoutParams(MATCH, WRAP))
+            c.addView(text("Die neun Muster auf einen Blick: lesen, nachschlagen und üben.", 14f, DIM).apply { gravity = Gravity.CENTER }, lp(8))
             c.addView(typeRow(), lp(14))
             c.addView(bigButton("📖", "Lern-Heft", "Die Lernposter, Kapitel für Kapitel") { push { showHome() }; showChapters() }, lp(16))
             c.addView(bigButton("🔎", "Die neun Typen", "Alles zu einem Typ auf einer Seite") { push { showHome() }; showTypes() }, lp(10))
