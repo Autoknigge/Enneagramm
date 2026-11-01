@@ -14,6 +14,8 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.appopen.AppOpenAd
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
@@ -79,6 +81,56 @@ class AdManager(
         MobileAds.initialize(activity) { }
         loadBanner()
         if (withStartAd) loadStartAd()
+        loadInterstitial()
+    }
+
+    private var interstitial: InterstitialAd? = null
+
+    private fun loadInterstitial() {
+        if (!adsInitialized || interstitial != null) return
+        InterstitialAd.load(
+            activity,
+            BuildConfig.ADMOB_INTERSTITIAL_ID,
+            AdRequest.Builder().build(),
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    interstitial = ad
+                }
+
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    interstitial = null
+                }
+            }
+        )
+    }
+
+    /**
+     * Zeigt eine Vollbild-Anzeige, wenn seit der letzten Anzeige genug Zeit vergangen ist und sie in dieser
+     * Sitzung nicht zu oft kam. Liefert true, wenn sie gezeigt wurde.
+     */
+    fun showInterstitialIfDue(): Boolean {
+        if (!adsInitialized || activity.isFinishing || activity.isDestroyed) return false
+        val now = System.currentTimeMillis()
+        if (now - lastFullscreen < MIN_GAP_MS || shownThisSession >= MAX_PER_SESSION) return false
+        val ad = interstitial
+        if (ad == null) {
+            loadInterstitial()
+            return false
+        }
+        interstitial = null
+        lastFullscreen = now
+        shownThisSession++
+        ad.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+                loadInterstitial()
+            }
+
+            override fun onAdFailedToShowFullScreenContent(error: com.google.android.gms.ads.AdError) {
+                loadInterstitial()
+            }
+        }
+        ad.show(activity)
+        return true
     }
 
     /** Kurze Anzeige beim Start: nur einmal je App-Start, nur wenn sie schnell genug geladen ist. */
@@ -97,6 +149,7 @@ class AdManager(
                     handler.removeCallbacksAndMessages(null)
                     if (timedOut || activity.isFinishing || activity.isDestroyed) return
                     ad.fullScreenContentCallback = object : FullScreenContentCallback() {}
+                    lastFullscreen = System.currentTimeMillis()
                     ad.show(activity)
                 }
 
@@ -152,5 +205,9 @@ class AdManager(
 
     companion object {
         private var startAdHandled = false
+        private var lastFullscreen = 0L
+        private var shownThisSession = 0
+        private const val MIN_GAP_MS = 4 * 60 * 1000L
+        private const val MAX_PER_SESSION = 3
     }
 }

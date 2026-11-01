@@ -84,6 +84,8 @@ class MainActivity : AppCompatActivity() {
     private val back = ArrayList<() -> Unit>()
     private var texts: List<String>? = null
     private var inReader = false
+    private var pagesSinceAd = 0
+    private val chapterStarts: Set<Int> by lazy { TOC.filter { it.first == 0 && it.third > 2 }.map { it.third }.toSet() }
 
     private fun dp(n: Int) = (n * resources.displayMetrics.density).toInt()
 
@@ -117,7 +119,7 @@ class MainActivity : AppCompatActivity() {
         }
         root.addView(adBox, LinearLayout.LayoutParams(MATCH, WRAP))
         setContentView(root)
-        adManager = AdManager(this, adBox, adSettings, false)
+        adManager = AdManager(this, adBox, adSettings, true)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -282,7 +284,15 @@ class MainActivity : AppCompatActivity() {
                 star.text = if (bookmarks().contains(cur)) "★" else "☆"
             }
             pg.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) { prefs.edit().putInt("page", position).apply(); refresh() }
+                override fun onPageSelected(position: Int) {
+                    prefs.edit().putInt("page", position).apply()
+                    refresh()
+                    // Vollbild-Anzeige nur beim Wechsel in einen neuen Hauptteil, nach mindestens 20 gelesenen Seiten
+                    pagesSinceAd++
+                    if (pagesSinceAd >= 20 && chapterStarts.contains(position + 1)) {
+                        if (adManager.showInterstitialIfDue()) pagesSinceAd = 0
+                    }
+                }
             })
             star.setOnClickListener { toggleBookmark(pg.currentItem); refresh() }
             menu.setOnClickListener { readerMenu(pg) }

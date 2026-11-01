@@ -15,6 +15,10 @@ val admobOpenId: String =
     (project.findProperty("ADMOB_OPEN_ID") as String?)?.takeIf { it.isNotBlank() }
         ?: "ca-app-pub-7178658520690671/1364669000"
 
+val admobInterstitialId: String =
+    (project.findProperty("ADMOB_INTERSTITIAL_ID") as String?)?.takeIf { it.isNotBlank() }
+        ?: "ca-app-pub-7178658520690671/6436820256"
+
 val ksFile = project.findProperty("KEYSTORE_FILE") as String?
 val ksPassword = project.findProperty("KEYSTORE_PASSWORD") as String?
 val ksAlias = project.findProperty("KEY_ALIAS") as String?
@@ -42,6 +46,7 @@ android {
         manifestPlaceholders["admobAppId"] = admobAppId
         buildConfigField("String", "ADMOB_BANNER_ID", "\"$admobBannerId\"")
         buildConfigField("String", "ADMOB_OPEN_ID", "\"$admobOpenId\"")
+        buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"$admobInterstitialId\"")
     }
 
     signingConfigs {
