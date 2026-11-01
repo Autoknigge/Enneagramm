@@ -286,9 +286,9 @@ class MainActivity : AppCompatActivity() {
                 override fun onPageSelected(position: Int) {
                     prefs.edit().putInt("page", position).apply()
                     refresh()
-                    // Vollbild-Anzeige nach jeweils 12 geblätterten Seiten, auch mitten in einem Teil
+                    // Vollbild-Anzeige nach jeweils 15 geblätterten Seiten, auch mitten in einem Teil
                     pagesSinceAd++
-                    if (pagesSinceAd >= 12) {
+                    if (pagesSinceAd >= 15) {
                         if (adManager.showInterstitialIfDue()) pagesSinceAd = 0
                     }
                 }
