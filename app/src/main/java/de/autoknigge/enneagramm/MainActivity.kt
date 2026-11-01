@@ -346,21 +346,49 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /** Text je Seite (Originalschreibweise) und dazu eine "gefaltete" Fassung für die Suche. */
+    private var folded: List<String>? = null
+
+    /** Kleinbuchstaben ohne Umlaute und Weichtrennungen; gleiche Länge wie das Original, damit Textausschnitte passen. */
+    private fun fold(s: String): String {
+        val sb = StringBuilder(s.length)
+        for (ch in s) {
+            when (val c = ch.lowercaseChar()) {
+                'ä' -> sb.append('a'); 'ö' -> sb.append('o'); 'ü' -> sb.append('u'); 'ß' -> sb.append('s')
+                'é', 'è', 'ê' -> sb.append('e'); 'á', 'à', 'â' -> sb.append('a'); 'ó', 'ô' -> sb.append('o'); 'ú', 'û' -> sb.append('u')
+                '\u00AD' -> sb.append(' ')
+                else -> sb.append(c)
+            }
+        }
+        return sb.toString()
+    }
+
+    /** Schreibweisen des Suchworts: mit Umlauten, mit ae/oe/ue und mit ss für ß. */
+    private fun variants(word: String): List<String> {
+        val base = fold(word)
+        val v = linkedSetOf(base)
+        v.add(base.replace("ae", "a").replace("oe", "o").replace("ue", "u"))
+        v.add(base.replace("ss", "s"))
+        v.add(base.replace("ae", "a").replace("oe", "o").replace("ue", "u").replace("ss", "s"))
+        return v.toList()
+    }
+
     private fun loadTexts(then: (List<String>) -> Unit) {
         texts?.let { then(it); return }
         io.execute {
             val list = runCatching {
                 val a = JSONObject(assets.open("text.json").bufferedReader().use { it.readText() }).getJSONArray("pages")
-                (0 until a.length()).map { a.getString(it) }
+                (0 until a.length()).map { a.getString(it).replace('\u00AD', ' ') }
             }.getOrDefault(emptyList())
-            runOnUiThread { texts = list; if (!isFinishing && !isDestroyed) then(list) }
+            val f = list.map { fold(it) }
+            runOnUiThread { texts = list; folded = f; if (!isFinishing && !isDestroyed) then(list) }
         }
     }
 
     private fun showSearch(initial: String = "") {
         screen("Suche", { goBack() }, { c ->
             val et = EditText(this).apply {
-                hint = "Begriff suchen, zum Beispiel „Flügel“"
+                hint = "Begriff suchen, zum Beispiel „Löwe“"
                 setText(initial)
                 setTextColor(INK)
                 setHintTextColor(DIM)
@@ -373,19 +401,34 @@ class MainActivity : AppCompatActivity() {
             c.addView(results, lp(8))
             fun run(q: String) {
                 results.removeAllViews()
-                val query = q.trim().lowercase()
-                if (query.length < 2) return
+                val words = q.trim().split(Regex("\\s+")).filter { it.length >= 2 }
+                if (words.isEmpty()) return
+                val wordVariants = words.map { variants(it) }
                 loadTexts { list ->
+                    val fl = folded ?: return@loadTexts
                     val hits = ArrayList<Triple<Int, String, Int>>()
-                    for ((i, t) in list.withIndex()) {
-                        val low = t.lowercase()
-                        val at = low.indexOf(query)
-                        if (at < 0) continue
-                        var n = 0; var k = at
-                        while (k >= 0) { n++; k = low.indexOf(query, k + query.length) }
-                        val from = (at - 40).coerceAtLeast(0)
-                        val to = (at + query.length + 70).coerceAtMost(t.length)
-                        hits.add(Triple(i, (if (from > 0) "… " else "") + t.substring(from, to) + (if (to < t.length) " …" else ""), n))
+                    for ((i, low) in fl.withIndex()) {
+                        // alle Wörter müssen auf der Seite vorkommen (in einer der Schreibweisen)
+                        var first = -1
+                        var count = 0
+                        var ok = true
+                        for ((wi, vs) in wordVariants.withIndex()) {
+                            var best = -1
+                            for (v in vs) {
+                                val at = low.indexOf(v)
+                                if (at >= 0 && (best < 0 || at < best)) best = at
+                            }
+                            if (best < 0) { ok = false; break }
+                            if (wi == 0) {
+                                first = best
+                                for (v in vs) { var k = low.indexOf(v); while (k >= 0) { count++; k = low.indexOf(v, k + v.length) } }
+                            }
+                        }
+                        if (!ok) continue
+                        val t = list[i]
+                        val from = (first - 40).coerceAtLeast(0)
+                        val to = (first + words[0].length + 70).coerceAtMost(t.length)
+                        hits.add(Triple(i, (if (from > 0) "… " else "") + t.substring(from, to) + (if (to < t.length) " …" else ""), count))
                     }
                     results.removeAllViews()
                     if (hits.isEmpty()) { results.addView(text("Keine Treffer.", 14f, DIM)); return@loadTexts }
@@ -410,7 +453,7 @@ class MainActivity : AppCompatActivity() {
                 override fun afterTextChanged(s: Editable?) { run(s?.toString() ?: "") }
             })
             if (initial.isNotEmpty()) run(initial)
-            c.addView(text("Das Buch enthält viele Grafiken. Dort stehende Begriffe lassen sich nicht immer finden.", 12f, DIM), lp(14))
+            c.addView(text("Die Suche findet auch Wörter in den Grafiken und Bildseiten des Buches. Umlaute sind egal: „Löwe“, „Lowe“ und „Loewe“ führen zum selben Ergebnis.", 12f, DIM), lp(14))
         })
     }
 
