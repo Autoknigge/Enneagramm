@@ -105,13 +105,12 @@ class AdManager(
     }
 
     /**
-     * Zeigt eine Vollbild-Anzeige, wenn seit der letzten Anzeige genug Zeit vergangen ist und sie in dieser
-     * Sitzung nicht zu oft kam. Liefert true, wenn sie gezeigt wurde.
+     * Zeigt eine Vollbild-Anzeige, wenn seit der letzten Anzeige mindestens 30 Sekunden vergangen sind. Liefert true, wenn sie gezeigt wurde.
      */
     fun showInterstitialIfDue(): Boolean {
         if (!adsInitialized || activity.isFinishing || activity.isDestroyed) return false
         val now = System.currentTimeMillis()
-        if (now - lastFullscreen < MIN_GAP_MS || shownThisSession >= MAX_PER_SESSION) return false
+        if (now - lastFullscreen < MIN_GAP_MS) return false
         val ad = interstitial
         if (ad == null) {
             loadInterstitial()
@@ -119,7 +118,6 @@ class AdManager(
         }
         interstitial = null
         lastFullscreen = now
-        shownThisSession++
         ad.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdDismissedFullScreenContent() {
                 loadInterstitial()
@@ -206,8 +204,6 @@ class AdManager(
     companion object {
         private var startAdHandled = false
         private var lastFullscreen = 0L
-        private var shownThisSession = 0
-        private const val MIN_GAP_MS = 4 * 60 * 1000L
-        private const val MAX_PER_SESSION = 3
+        private const val MIN_GAP_MS = 30 * 1000L
     }
 }

@@ -85,7 +85,6 @@ class MainActivity : AppCompatActivity() {
     private var texts: List<String>? = null
     private var inReader = false
     private var pagesSinceAd = 0
-    private val chapterStarts: Set<Int> by lazy { TOC.filter { it.first == 0 && it.third > 2 }.map { it.third }.toSet() }
 
     private fun dp(n: Int) = (n * resources.displayMetrics.density).toInt()
 
@@ -287,9 +286,9 @@ class MainActivity : AppCompatActivity() {
                 override fun onPageSelected(position: Int) {
                     prefs.edit().putInt("page", position).apply()
                     refresh()
-                    // Vollbild-Anzeige nur beim Wechsel in einen neuen Hauptteil, nach mindestens 20 gelesenen Seiten
+                    // Vollbild-Anzeige nach jeweils 12 geblätterten Seiten, auch mitten in einem Teil
                     pagesSinceAd++
-                    if (pagesSinceAd >= 20 && chapterStarts.contains(position + 1)) {
+                    if (pagesSinceAd >= 12) {
                         if (adManager.showInterstitialIfDue()) pagesSinceAd = 0
                     }
                 }
