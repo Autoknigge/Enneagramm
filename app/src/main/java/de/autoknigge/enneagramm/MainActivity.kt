@@ -247,8 +247,6 @@ class MainActivity : AppCompatActivity() {
 
     // ------------------------------------------------------------------ Lesen
 
-    private fun mode() = prefs.getInt("mode", 0)
-
     private fun openReader(page: Int) {
         withBook { file ->
             leaveReader()
@@ -271,11 +269,10 @@ class MainActivity : AppCompatActivity() {
             root.addView(top, LinearLayout.LayoutParams(MATCH, WRAP))
             val pg = ViewPager2(this)
             val ad = PageAdapter(file, (resources.displayMetrics.widthPixels * 1.7f).toInt())
-            ad.mode = mode()
             pg.adapter = ad
             pg.offscreenPageLimit = 1
             pageCount = ad.itemCount
-            pg.setBackgroundColor(Color.parseColor(if (mode() == 1) "#0B0F0C" else if (mode() == 2) "#2A2418" else "#202824"))
+            pg.setBackgroundColor(Color.parseColor("#202824"))
             pg.setCurrentItem(page.coerceIn(0, pageCount - 1), false)
             fun refresh() {
                 val cur = pg.currentItem
@@ -286,9 +283,9 @@ class MainActivity : AppCompatActivity() {
                 override fun onPageSelected(position: Int) {
                     prefs.edit().putInt("page", position).apply()
                     refresh()
-                    // Vollbild-Anzeige nach jeweils 15 geblätterten Seiten, auch mitten in einem Teil
+                    // Vollbild-Anzeige nach jeweils 20 geblätterten Seiten, auch mitten in einem Teil
                     pagesSinceAd++
-                    if (pagesSinceAd >= 15) {
+                    if (pagesSinceAd >= 20) {
                         if (adManager.showInterstitialIfDue()) pagesSinceAd = 0
                     }
                 }
@@ -304,7 +301,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun readerMenu(pg: ViewPager2) {
-        val items = arrayOf("📑  Inhalt", "🔎  Suche", "🔖  Lesezeichen", "↗️  Gehe zu Seite …", "🌗  Anzeige: Hell / Dunkel / Lesemodus")
+        val items = arrayOf("📑  Inhalt", "🔎  Suche", "🔖  Lesezeichen", "↗️  Gehe zu Seite …")
         AlertDialog.Builder(this).setItems(items) { _, i ->
             val here = pg.currentItem
             when (i) {
@@ -312,13 +309,6 @@ class MainActivity : AppCompatActivity() {
                 1 -> { push { openReader(here) }; showSearch() }
                 2 -> { push { openReader(here) }; showBookmarks() }
                 3 -> gotoDialog()
-                4 -> {
-                    val m = (mode() + 1) % 3
-                    prefs.edit().putInt("mode", m).apply()
-                    adapter?.mode = m
-                    pg.setBackgroundColor(Color.parseColor(if (m == 1) "#0B0F0C" else if (m == 2) "#2A2418" else "#202824"))
-                    android.widget.Toast.makeText(this, listOf("Hell", "Dunkel", "Lesemodus (warmes Papier)")[m], android.widget.Toast.LENGTH_SHORT).show()
-                }
             }
         }.show()
     }
@@ -498,7 +488,7 @@ class MainActivity : AppCompatActivity() {
             box.addView(text("Zur Nutzung", 17f, GOLD, true), lp(16))
             box.addView(text("Das Enneagramm ist ein Modell zur Selbstreflexion und Orientierung. Es ist kein Diagnoseverfahren und ersetzt weder ärztlichen noch psychologischen oder therapeutischen Rat.", 14.5f, INK), lp(8))
             box.addView(text("So liest du", 17f, GOLD, true), lp(16))
-            box.addView(text("• Wische nach links und rechts, um zu blättern.\n• Doppeltippen oder zwei Finger zoomen die Seite.\n• ☆ merkt die Seite, ⋮ öffnet Inhalt, Suche, Lesezeichen und die Anzeige (hell, dunkel, Lesemodus).\n• Die App merkt sich, wo du aufgehört hast.", 14.5f, INK), lp(8))
+            box.addView(text("• Wische nach links und rechts, um zu blättern.\n• Doppeltippen oder zwei Finger zoomen die Seite.\n• ☆ merkt die Seite, ⋮ öffnet Inhalt, Suche, Lesezeichen und „Gehe zu Seite“.\n• Die App merkt sich, wo du aufgehört hast.", 14.5f, INK), lp(8))
             box.addView(text("©Marc Krekler · Eine Idee von autoknigge.de. Die App ist kostenlos und zeigt am unteren Rand Werbung. Deine Lesezeichen und die zuletzt gelesene Seite bleiben nur auf deinem Gerät.", 13f, DIM), lp(16))
             c.addView(box, lp(4))
         })

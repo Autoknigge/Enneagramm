@@ -1,6 +1,6 @@
 # Die Matrix des Lebendigen – Das Enneagramm
 
-Leseapp für das Buch von Marc Krekler (166 Seiten): Blättern, Zoomen, Inhaltsverzeichnis, Volltextsuche, Lesezeichen, Hell/Dunkel/Lesemodus. Läuft ohne Internet; Google AdMob zeigt einen Banner (Einwilligungsabfrage inklusive).
+Leseapp für das Buch von Marc Krekler (166 Seiten): Blättern, Zoomen, Inhaltsverzeichnis, Volltextsuche, Lesezeichen. Läuft ohne Internet; Google AdMob zeigt einen Banner (Einwilligungsabfrage inklusive).
 
 Paketname: `de.autoknigge.enneagramm`
 
