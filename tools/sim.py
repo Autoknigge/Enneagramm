@@ -10,7 +10,7 @@ INST=["sp","so","sx"]
 class S:
     def __init__(s):
         s.t=[0.0]*10; s.i={k:0.0 for k in INST}; s.b={"bauch":0.0,"herz":0.0,"kopf":0.0}
-        s.w=[0.0,0.0]; s.asked=set(); s.phase="A"; s.hist=[]; s.gegen=False; s.cn=0; s.rounds=0
+        s.w=[0.0,0.0]; s.side=[0.0,0.0,0.0]; s.asked=set(); s.phase="A"; s.hist=[]; s.gegen=False; s.cn=0; s.rounds=0
 def apply(s,q,idx):
     s.asked.add(q["id"])
     if idx<0: return
@@ -19,6 +19,14 @@ def apply(s,q,idx):
         elif k in s.b:
             s.b[k]+=v
             for ty in CEN[k]: s.t[ty]+=v
+        elif k=="mann":
+            s.side[0]+=v
+            for ty in (5,6,7,8): s.t[ty]+=v
+        elif k=="frau":
+            s.side[1]+=v
+            for ty in (1,2,3,4): s.t[ty]+=v
+        elif k=="neun":
+            s.side[2]+=v; s.t[9]+=1.5*v
         elif k=="wl": s.w[0]+=v
         elif k=="wh": s.w[1]+=v
         else: s.t[int(k)]+=v
@@ -34,10 +42,17 @@ def pick(s):
         if ph=="A":
             n=sum(1 for q in pool("A") if q["id"] in s.asked)
             if n>=6 and (lead(list(s.i.values()))>=4.0 or n>=10):
-                s.phase="B"; continue
+                s.phase="S"; continue
             r=[q for q in pool("A") if q["id"] not in s.asked][:3]
-            if not r: s.phase="B"; continue
+            if not r: s.phase="S"; continue
             return "Instinkt",r
+        if ph=="S":
+            n=sum(1 for q in pool("S") if q["id"] in s.asked)
+            if n>=3 and (lead(s.side)>=3.0 or n>=6):
+                s.phase="B"; continue
+            r=[q for q in pool("S") if q["id"] not in s.asked][:3]
+            if not r: s.phase="B"; continue
+            return "Seite",r
         if ph=="B":
             n=sum(1 for q in pool("B") if q["id"] in s.asked)
             if n>=3 and (lead(list(s.b.values()))>=3.0 or n>=9):
@@ -125,6 +140,11 @@ if __name__=="__main__":
                                 if other in o["w"]: return j
                         for j,o in enumerate(q["o"]):
                             if key in o["w"] and o["w"][key]>0: return j
+                    if q["st"]=="S":
+                        for j,o in enumerate(q["o"]):
+                            if ty==9 and "neun" in o["w"]: return j
+                            if ty in (5,6,7,8) and "mann" in o["w"]: return j
+                            if ty in (1,2,3,4) and "frau" in o["w"]: return j
                     if q["st"]=="B":
                         c=[k for k,v in CEN.items() if ty in v][0]
                         for j,o in enumerate(q["o"]):

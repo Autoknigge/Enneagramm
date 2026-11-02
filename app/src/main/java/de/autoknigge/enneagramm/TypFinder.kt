@@ -49,6 +49,7 @@ class TypFinder(json: String) {
         val i = doubleArrayOf(0.0, 0.0, 0.0)           // sp, so, sx
         val b = doubleArrayOf(0.0, 0.0, 0.0)           // bauch, herz, kopf
         val w = doubleArrayOf(0.0, 0.0)                // unterer / oberer Flügel
+        val side = doubleArrayOf(0.0, 0.0, 0.0)        // männlich (5-8), weiblich (1-4), vermittelnd (9)
         val asked = HashSet<String>()
         val hist = ArrayList<Pair<TFQuestion, Int>>()
         var phase = "A"
@@ -70,6 +71,9 @@ class TypFinder(json: String) {
             "bauch" -> { s.b[0] += v; for (ty in CEN[0]) s.t[ty] += v }
             "herz" -> { s.b[1] += v; for (ty in CEN[1]) s.t[ty] += v }
             "kopf" -> { s.b[2] += v; for (ty in CEN[2]) s.t[ty] += v }
+            "mann" -> { s.side[0] += v; for (ty in 5..8) s.t[ty] += v }
+            "frau" -> { s.side[1] += v; for (ty in 1..4) s.t[ty] += v }
+            "neun" -> { s.side[2] += v; s.t[9] += 1.5 * v }
             "wl" -> s.w[0] += v
             "wh" -> s.w[1] += v
             else -> s.t[k.toInt()] += v
@@ -101,10 +105,17 @@ class TypFinder(json: String) {
             when (s.phase) {
                 "A" -> {
                     val n = pool("A").count { it.id in s.asked }
-                    if (n >= 6 && (lead(s.i) >= 4.0 || n >= 10)) { s.phase = "B"; continue }
+                    if (n >= 6 && (lead(s.i) >= 4.0 || n >= 10)) { s.phase = "S"; continue }
                     val r = pool("A").filter { it.id !in s.asked }.take(3)
-                    if (r.isEmpty()) { s.phase = "B"; continue }
+                    if (r.isEmpty()) { s.phase = "S"; continue }
                     return TFRound("Instinkt", r)
+                }
+                "S" -> {
+                    val n = pool("S").count { it.id in s.asked }
+                    if (n >= 3 && (lead(s.side) >= 3.0 || n >= 6)) { s.phase = "B"; continue }
+                    val r = pool("S").filter { it.id !in s.asked }.take(3)
+                    if (r.isEmpty()) { s.phase = "B"; continue }
+                    return TFRound("Seite", r)
                 }
                 "B" -> {
                     val n = pool("B").count { it.id in s.asked }

@@ -584,6 +584,8 @@ class MainActivity : AppCompatActivity() {
             c.addView(text(head, 20f, GOLD, true), lp(4))
             c.addView(text("Sicherheit: ${r.confidence}", 14f, INK), lp(2))
             if (r.confidence == "offen") c.addView(text("Zwei bis drei Typen liegen nah beieinander. Prüfe sie im Buch (Seiten 79 bis 82).", 13f, DIM), lp(4))
+            c.addView(text("Seite (Buch, Seite 8)", 13f, GOLD, true), lp(16))
+            c.addView(text(when (top) { in 5..8 -> "Männliche Seite (5 bis 8): ausrichtende Kraft, „Ich setze in Bewegung.“"; in 1..4 -> "Weibliche Seite (1 bis 4): aufnehmende Kraft, „Ich lasse entstehen.“"; else -> "Die 9 vermittelt zwischen den beiden Seiten." }, 15f, INK), lp(2))
             c.addView(text("Instinkt", 13f, GOLD, true), lp(16))
             val i0 = TypFinder.INST_NAMES[r.inst[0].first] ?: ""
             c.addView(text(i0 + if (r.instOpen) "\nDer zweite Instinkt liegt nah dran: ${TypFinder.INST_NAMES[r.inst[1].first]}." else "", 15f, INK), lp(2))

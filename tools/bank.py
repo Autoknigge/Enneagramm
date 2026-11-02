@@ -64,6 +64,37 @@ for i,(q,a,b,c) in enumerate([
 add(id="A12", st="A", q="Denk an die letzten Jahre. Wofür hast du wirklich Zeit und Geld gegeben?",
     o=[{"t":"Für Alltag und Sicherheit.","w":{"sp":2}},{"t":"Für Gruppen und Ämter.","w":{"so":2}},{"t":"Für einzelne Beziehungen.","w":{"sx":2}}])
 
+
+# ---- Stufe S: Seite (Buch S. 8: männlich 5-8 ausrichtend, weiblich 1-4 aufnehmend, die 9 vermittelt) ----
+S = [
+ ("Du gerätst in eine schwierige Situation. Was geschieht typischerweise zuerst?",
+  "Ich werde aktiv: abgrenzen, entscheiden, handeln, Verantwortung übernehmen.",
+  "Ich nehme wahr, spüre hin und verbinde mich mit der Lage. Sie darf sich entwickeln.",
+  "Ich gleiche aus, sehe alle Seiten und halte die Spannung klein."),
+ ("In einer Gruppe fällt dir meistens welche Rolle zu?",
+  "Orientierung und Schutz geben, Ziele verfolgen.",
+  "Beziehungen gestalten und anderen Entwicklung ermöglichen.",
+  "Zwischen den anderen vermitteln und verbinden."),
+ ("Welcher Satz passt besser zu dir?",
+  "„Ich setze in Bewegung.“",
+  "„Ich lasse entstehen.“",
+  "„Ich verbinde, was auseinanderstrebt.“"),
+ ("Etwas Neues beginnt. Was tust du?",
+  "Ich lege ein Ziel fest und gestalte los.",
+  "Ich nehme erst auf, was da ist, und lasse es wachsen.",
+  "Ich schaue, was die anderen wollen, und passe mich an."),
+ ("Bei einem Konflikt zwischen zwei Menschen:",
+  "Ich setze Grenzen und entscheide, wie es weitergeht.",
+  "Ich nehme wahr, was alle fühlen, und halte die Verbindung.",
+  "Ich vermittle, damit wieder Frieden herrscht."),
+ ("Wann fühlst du dich kraftvoll?",
+  "Wenn ich etwas bewege und andere schütze.",
+  "Wenn ich etwas wachsen lasse und begleite.",
+  "Wenn Ruhe und Einklang herrschen."),
+]
+for i,(q,a,b,c) in enumerate(S,1):
+    add(id=f"S{i:02d}", st="S", q=q, o=[{"t":a,"w":{"mann":1}},{"t":b,"w":{"frau":1}},{"t":c,"w":{"neun":1}}])
+
 # ---- Stufe B: Zentrum (Optionen: bauch, herz, kopf) ----
 B = [
  ("Jemand überschreitet im Alltag deine Grenze. Was passiert zuerst?",
