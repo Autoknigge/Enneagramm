@@ -240,6 +240,7 @@ class MainActivity : AppCompatActivity() {
             else c.addView(bigButton("📖", "Buch lesen", "Von Anfang an") { push { showHome() }; openReader(0) }, lp(16))
             c.addView(bigButton("📑", "Inhalt", "Kapitel und Abschnitte") { push { showHome() }; showToc() }, lp(10))
             c.addView(bigButton("🔎", "Suche", "Begriffe im ganzen Buch finden") { push { showHome() }; showSearch() }, lp(10))
+            c.addView(bigButton("🧭", "Typ-Finder", "Geführte Fragen zu Typ, Untertyp und Flügel") { push { showHome() }; showTypFinderIntro() }, lp(10))
             c.addView(bigButton("🔖", "Lesezeichen", "${bookmarks().size} gesetzt") { push { showHome() }; showBookmarks() }, lp(10))
             c.addView(bigButton("ℹ️", "Info", "Hinweise zum Buch und zur App") { push { showHome() }; showInfo() }, lp(10))
         })
@@ -480,6 +481,140 @@ class MainActivity : AppCompatActivity() {
 
     // ------------------------------------------------------------------ Info
 
+
+    // ------------------------------------------------------------------ Typ-Finder
+
+    private var tf: TypFinder? = null
+    private val tfAnswers = LinkedHashMap<String, Int>()
+
+    private fun finder(): TypFinder {
+        tf?.let { return it }
+        val f = TypFinder(assets.open("typfinder.json").bufferedReader().use { it.readText() })
+        tf = f
+        return f
+    }
+
+    private fun tfLoad() {
+        tfAnswers.clear()
+        for (part in (prefs.getString("tf_ans", "") ?: "").split(";")) {
+            val kv = part.split(":")
+            if (kv.size == 2) kv[1].toIntOrNull()?.let { tfAnswers[kv[0]] = it }
+        }
+    }
+
+    private fun tfSave() {
+        prefs.edit().putString("tf_ans", tfAnswers.entries.joinToString(";") { "${it.key}:${it.value}" }).apply()
+    }
+
+    private fun showTypFinderIntro() {
+        tfLoad()
+        back.clear(); push { showHome() }
+        screen("Typ-Finder", { showHome() }, { c ->
+            c.addView(text(
+                "Ein geführtes Interview zur Selbsterkenntnis. In jeder Runde kommen zwei bis drei Fragen aus dem Alltag und aus deinem Leben. " +
+                    "Am Ende bekommst du eine Einschätzung zu Instinkt, Typ, Untertyp und Flügel, mit Begründung, Gegenargumenten und Sicherheit.",
+                15f, INK), lp(4))
+            c.addView(text("• Es dauert etwa 10 bis 15 Minuten.\n• Antworte nach dem Warum, nicht nach dem, was du gern wärst.\n• Ist nichts passend, wähle „Keine passt wirklich“.\n• Deine Antworten bleiben auf deinem Gerät.", 14f, DIM), lp(12))
+            val n = tfAnswers.size
+            if (n > 0) c.addView(bigButton("▶️", "Fortsetzen", "$n Antworten gespeichert") { showTypFinder() }, lp(16))
+            c.addView(bigButton("🧭", if (n > 0) "Neu beginnen" else "Starten", "") {
+                tfAnswers.clear(); tfSave(); showTypFinder()
+            }, lp(if (n > 0) 10 else 16))
+            c.addView(text("Das Ergebnis ist eine Einladung zum Prüfen, kein festes Etikett (Buch, Seite 82). Es ersetzt weder Beratung noch Therapie.", 12f, DIM), lp(14))
+        })
+    }
+
+    private fun showTypFinder() {
+        val step = finder().replay(tfAnswers)
+        val res = step.result
+        if (res != null) showTfResult(res) else showTfRound(step)
+    }
+
+    private fun tfBack(step: TypFinder.Step) {
+        if (step.lastRound.isEmpty()) { showTypFinderIntro(); return }
+        for (id in step.lastRound) tfAnswers.remove(id)
+        tfSave()
+        showTypFinder()
+    }
+
+    private fun showTfRound(step: TypFinder.Step) {
+        val round = step.round ?: return
+        back.clear(); push { tfBack(step) }
+        val sel = HashMap<String, Int>()
+        screen("Typ-Finder", { tfBack(step) }, { c ->
+            c.addView(text("Runde ${step.roundNo} · ${round.name}", 13f, GOLD, true), lp(2))
+            c.addView(text("Wähle, was am ehesten zutrifft. Die erste Regung zählt.", 12f, DIM), lp(2))
+            for (q in round.qs) {
+                c.addView(text(q.q, 16f, INK, true), lp(18))
+                val views = ArrayList<Pair<Int, TextView>>()
+                fun restyle() {
+                    for ((idx, v) in views) {
+                        val on = sel[q.id] == idx
+                        v.background = if (on) card(Color.parseColor("#3C3A1F"), GOLD) else card()
+                    }
+                }
+                val order = (q.o.indices).toList().shuffled(java.util.Random(q.id.hashCode().toLong()))
+                for (idx in order + listOf(-1)) {
+                    val label = if (idx < 0) "Keine passt wirklich" else q.o[idx].text
+                    val v = text(label, if (idx < 0) 13f else 15f, if (idx < 0) DIM else INK).apply {
+                        setPadding(dp(14), dp(11), dp(14), dp(11))
+                        isClickable = true
+                        setOnClickListener { sel[q.id] = idx; restyle() }
+                    }
+                    views.add(idx to v)
+                    c.addView(v, lp(8))
+                }
+                restyle()
+            }
+            c.addView(bigButton("➡️", "Weiter", "") {
+                if (round.qs.all { sel.containsKey(it.id) }) {
+                    tfAnswers.putAll(sel); tfSave(); showTypFinder()
+                } else android.widget.Toast.makeText(this, "Bitte jede Frage beantworten.", android.widget.Toast.LENGTH_SHORT).show()
+            }, lp(22))
+        })
+    }
+
+    private fun showTfResult(r: TFResult) {
+        back.clear(); push { showHome() }
+        val top = r.types[0].first
+        val sub = TypFinder.SUB[r.sub]
+        val shareText = StringBuilder()
+        screen("Deine Einschätzung", { showHome() }, { c ->
+            val head = "Typ $top · ${TypFinder.TYPE_NAMES[top]}"
+            c.addView(text(head, 20f, GOLD, true), lp(4))
+            c.addView(text("Sicherheit: ${r.confidence}", 14f, INK), lp(2))
+            if (r.confidence == "offen") c.addView(text("Zwei bis drei Typen liegen nah beieinander. Prüfe sie im Buch (Seiten 79 bis 82).", 13f, DIM), lp(4))
+            c.addView(text("Instinkt", 13f, GOLD, true), lp(16))
+            val i0 = TypFinder.INST_NAMES[r.inst[0].first] ?: ""
+            c.addView(text(i0 + if (r.instOpen) "\nDer zweite Instinkt liegt nah dran: ${TypFinder.INST_NAMES[r.inst[1].first]}." else "", 15f, INK), lp(2))
+            c.addView(text("Untertyp", 13f, GOLD, true), lp(14))
+            if (sub != null) {
+                c.addView(text("${r.sub} · ${sub.first}", 16f, INK, true), lp(2))
+                c.addView(text(sub.second, 14f, DIM), lp(2))
+                if (r.sub in TypFinder.KONTRA) c.addView(text("Hinweis (Seite 37): Kontratypen sind besonders schwer zu bestimmen, weil der Instinkt der Grundleidenschaft entgegenwirkt.", 12f, DIM), lp(6))
+            }
+            c.addView(text("Flügel", 13f, GOLD, true), lp(14))
+            c.addView(text(if (r.wing != null) "${top}w${r.wing}" else "Kein klarer Flügel erkennbar", 15f, INK), lp(2))
+            if (r.pro.isNotEmpty()) {
+                c.addView(text("Dafür sprach", 13f, GOLD, true), lp(14))
+                for (s in r.pro) c.addView(text("• $s", 14f, INK), lp(4))
+            }
+            val run = r.types[1].first
+            c.addView(text("Auch möglich: Typ $run · ${TypFinder.TYPE_NAMES[run]}", 13f, GOLD, true), lp(14))
+            for (s in r.contra) c.addView(text("• $s", 14f, DIM), lp(4))
+            c.addView(text("Prüffrage zum Gegenlesen: Buch, Seite 82.", 13f, DIM), lp(6))
+            c.addView(text("Rangliste: " + r.types.joinToString(" · ") { "Typ ${it.first}" }, 13f, DIM), lp(10))
+            c.addView(text("Grundlage: ${r.questionsAsked} Antworten. Das Ergebnis ist eine Einladung zum Prüfen, kein festes Etikett.", 12f, DIM), lp(8))
+            c.addView(bigButton("📖", "Im Buch: die Untertypen", "Seite ${27 + top}") { push { showTfResult(r) }; openReader(26 + top) }, lp(18))
+            c.addView(bigButton("📖", "Im Buch: Typ erkennen", "Seiten 79 bis 82") { push { showTfResult(r) }; openReader(78) }, lp(10))
+            c.addView(bigButton("📤", "Ergebnis teilen", "") {
+                val msg = "Mein Typ-Finder-Ergebnis (Enneagramm · Matrix des Lebens): Typ $top, ${r.sub}" + (r.wing?.let { ", Flügel ${top}w$it" } ?: "") + ". Sicherheit: ${r.confidence}. Eine Einladung zum Prüfen, kein Etikett."
+                startActivity(android.content.Intent.createChooser(android.content.Intent(android.content.Intent.ACTION_SEND).apply { type = "text/plain"; putExtra(android.content.Intent.EXTRA_TEXT, msg) }, "Teilen"))
+            }, lp(10))
+            c.addView(bigButton("🔄", "Neu beginnen", "") { tfAnswers.clear(); tfSave(); showTypFinder() }, lp(10))
+        })
+    }
+
     private fun showInfo() {
         screen("Info", { goBack() }, { c ->
             val box = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; background = card(); setPadding(dp(16), dp(14), dp(16), dp(16)) }
@@ -489,6 +624,8 @@ class MainActivity : AppCompatActivity() {
             box.addView(text("Das Enneagramm ist ein Modell zur Selbstreflexion und Orientierung. Es ist kein Diagnoseverfahren und ersetzt weder ärztlichen noch psychologischen oder therapeutischen Rat.", 14.5f, INK), lp(8))
             box.addView(text("So liest du", 17f, GOLD, true), lp(16))
             box.addView(text("• Wische nach links und rechts, um zu blättern.\n• Doppeltippen oder zwei Finger zoomen die Seite.\n• ☆ merkt die Seite, ⋮ öffnet Inhalt, Suche, Lesezeichen und „Gehe zu Seite“.\n• Die App merkt sich, wo du aufgehört hast.", 14.5f, INK), lp(8))
+            box.addView(text("Typ-Finder", 17f, GOLD, true), lp(16))
+            box.addView(text("Eine geführte Befragung mit Fragen aus dem Alltag, die zu einer Einschätzung von Instinkt, Typ, Untertyp und Flügel führt. Die Fragen folgen dem Buch. Das Ergebnis ist eine Einladung zum Prüfen, kein festes Etikett. Deine Antworten bleiben auf deinem Gerät.", 14.5f, INK), lp(8))
             box.addView(text("©Marc Krekler · Eine Idee von autoknigge.de. Die App ist kostenlos und zeigt am unteren Rand Werbung. Deine Lesezeichen und die zuletzt gelesene Seite bleiben nur auf deinem Gerät.", 13f, DIM), lp(16))
             c.addView(box, lp(4))
         })
